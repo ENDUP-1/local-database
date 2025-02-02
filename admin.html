@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - View Accounts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            min-height: 100vh;
+        }
+        nav {
+            background-color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .logout {
+            padding: 0.5rem 1rem;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+        .logout:hover {
+            background-color: #dc2626;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #1f2937;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        .accounts-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .accounts-table th,
+        .accounts-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .accounts-table th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+        .accounts-table tr:hover {
+            background-color: #f9fafb;
+        }
+        .delete-btn {
+            padding: 0.25rem 0.5rem;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background-color: #dc2626;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #3b82f6;
+            color: white;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            margin-bottom: 1rem;
+        }
+        .back-btn:hover {
+            background-color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <div class="logo">Admin Dashboard</div>
+            <div class="user-info">
+                <button class="logout" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <a href="dashboard.html" class="back-btn">Back to Dashboard</a>
+        <div class="card">
+            <h2>Registered Accounts</h2>
+            <table class="accounts-table">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="accountsList">
+                    <!-- Accounts will be listed here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is authenticated
+        if (localStorage.getItem('isAuthenticated') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
+        function displayAccounts() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const accountsList = document.getElementById('accountsList');
+            accountsList.innerHTML = '';
+
+            users.forEach((user, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.email}</td>
+                    <td>${user.password}</td>
+                    <td>
+                        <button class="delete-btn" onclick="deleteAccount(${index})">Delete</button>
+                    </td>
+                `;
+                accountsList.appendChild(row);
+            });
+        }
+
+        function deleteAccount(index) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            users.splice(index, 1);
+            localStorage.setItem('users', JSON.stringify(users));
+            displayAccounts();
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+
+        // Display accounts when page loads
+        displayAccounts();
+    </script>
+</body>
+</html>

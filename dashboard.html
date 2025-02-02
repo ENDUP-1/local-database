@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            min-height: 100vh;
+        }
+        nav {
+            background-color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .welcome {
+            color: #4b5563;
+        }
+        .logout {
+            padding: 0.5rem 1rem;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+        .logout:hover {
+            background-color: #dc2626;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #1f2937;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        p {
+            color: #4b5563;
+            margin: 0;
+        }
+        .admin-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: #3b82f6;
+            color: white;
+            text-decoration: none;
+            border-radius: 0.25rem;
+        }
+        .admin-link:hover {
+            background-color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <div class="logo">Dashboard</div>
+            <div class="user-info">
+                <span class="welcome">Welcome, <span id="currentUser"></span></span>
+                <button class="logout" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="card">
+            <h2>Welcome to Your Dashboard</h2>
+            <p>You are now logged in. This is a protected page that only authenticated users can see.</p>
+            <a href="admin.html" class="admin-link">View All Accounts</a>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is authenticated
+        if (localStorage.getItem('isAuthenticated') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
+        // Display current user
+        document.getElementById('currentUser').textContent = localStorage.getItem('currentUser');
+
+        function handleLogout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
